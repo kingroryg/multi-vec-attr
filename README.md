@@ -12,9 +12,9 @@ pip install -e .
 mkdir -p data/prompts data/generated results
 
 # Method A: Using curl
-curl -L "https://raw.githubusercontent.com/tylin/coco-caption/master/annotations/captions_train2014.json" | \
-  python -c "import json,sys; caps=json.load(sys.stdin); print('\n'.join([a['caption'] for a in caps['annotations'][:50000]]))" \
-  > data/prompts/coco_captions.txt
+curl -L "https://raw.githubusercontent.com/tylin/coco-caption/refs/heads/master/annotations/captions_val2014.json" | \
+python -c "import json,sys; caps=json.load(sys.stdin); print('\n'.join([a['caption'] for a in caps['annotations'][:50000]]))" \
+> data/prompts/coco_captions.txt
 
 # Method B: Create simple test prompts (for quick testing)
 cat > data/prompts/coco_captions.txt << 'EOF'
