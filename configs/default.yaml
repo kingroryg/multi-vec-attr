@@ -1,0 +1,39 @@
+# Default Configuration for CDW Experiments
+# ==========================================
+
+# Model settings
+model_id: "runwayml/stable-diffusion-v1-5"
+scheduler: "ddim"
+num_inference_steps: 50
+guidance_scale: 7.5
+
+# Watermark settings
+code_length: 64
+code_family: "walsh_hadamard"  # walsh_hadamard, gold, random
+watermark_strength: 0.1
+watermark_channel: 3  # Which latent channel (0-3)
+
+# Ring geometry (64x64 latent space)
+ring_r_min: 4.0
+ring_r_max: 20.0
+latent_size: 64
+
+# Detection
+detection_threshold: 0.3
+ddim_inversion_steps: 50
+
+# Experiment defaults
+num_vendors: 32
+num_images_per_vendor: 100
+num_runs: 3
+random_seed: 42
+
+# Paths
+output_dir: "results"
+data_dir: "data"
+prompts_file: "data/prompts/coco_captions.txt"
+
+# Hardware
+device: "auto"  # auto, cuda, cpu, mps
+batch_size: 4
+num_workers: 4
