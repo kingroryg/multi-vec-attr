@@ -1,61 +1,15 @@
-# Code-Division Watermarking (CDW) Experiments
-
-Production-grade experiments for validating Code-Division Watermarking for diffusion models.
-
----
-
-## Table of Contents
-
-1. [Prerequisites](#prerequisites)
-2. [Installation](#installation)
-3. [Quick Test](#quick-test)
-4. [Running All Experiments](#running-all-experiments)
-5. [Running Individual Experiments](#running-individual-experiments)
-6. [Generating Paper Figures & Tables](#generating-paper-figures--tables)
-7. [Expected Results](#expected-results)
-8. [Troubleshooting](#troubleshooting)
-
----
-
-## Prerequisites
-
-**Hardware Requirements:**
-- GPU: NVIDIA GPU with at least 10GB VRAM (RTX 3080+ recommended)
-- RAM: 32GB minimum
-- Storage: 50GB free space
-
-**Software Requirements:**
-- Python 3.9+
-- CUDA 11.8+ (for GPU acceleration)
-- Git
-
----
+# Scalable Multi-Vendor Attribution for Diffusion Models
 
 ## Installation
 
 Run these commands in order:
 
 ```bash
-# 1. Navigate to experiment directory
-cd /Users/kingroryg/workspace/papers/cdma_exp
-
-# 2. Create and activate virtual environment
 python -m venv venv
 source venv/bin/activate
-
-# 3. Upgrade pip
-pip install --upgrade pip
-
-# 4. Install dependencies
 pip install -r requirements.txt
-
-# 5. Install the cdma_exp package in editable mode
 pip install -e .
-
-# 6. Create data directories
 mkdir -p data/prompts data/generated results
-
-# 7. Download COCO captions for prompts (choose one method):
 
 # Method A: Using curl
 curl -L "https://raw.githubusercontent.com/tylin/coco-caption/master/annotations/captions_train2014.json" | \
@@ -76,7 +30,7 @@ A dog running through a grassy field
 A cozy living room with a fireplace
 EOF
 
-# 8. Verify installation
+# Verify installation
 python -c "from cdw import CDWEmbedder, CDWDetector; print('Installation successful!')"
 ```
 
@@ -87,14 +41,12 @@ python -c "from cdw import CDWEmbedder, CDWDetector; print('Installation success
 Before running full experiments, verify everything works:
 
 ```bash
-# Quick test with minimal settings (takes ~5 minutes on GPU)
 python experiments/exp1_vendor_scaling.py \
   --num-vendors 4 \
   --num-images 5 \
   --output-dir results/test \
   --seed 42
 
-# Check the results
 cat results/test/exp1_vendor_scaling/*/results.json | python -m json.tool
 ```
 
@@ -439,53 +391,12 @@ pip install lpips torchmetrics scikit-image
 python -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}'); print(f'GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else \"None\"}')"
 ```
 
----
-
-## Project Structure
-
-```
-cdma_exp/
-├── cdw/                    # Core CDW implementation
-│   ├── codes.py            # Walsh-Hadamard, Gold, Random codes
-│   ├── embedding.py        # Fourier-domain watermark embedding
-│   ├── detection.py        # DDIM inversion + correlation detection
-│   ├── ring_mask.py        # Annular Fourier regions
-│   └── utils.py            # Utilities
-├── attacks/                # Image perturbation suite
-│   ├── compression.py      # JPEG, WebP
-│   ├── noise.py            # Gaussian, salt-pepper, speckle
-│   ├── geometric.py        # Resize, crop, rotate
-│   ├── color.py            # Brightness, contrast, saturation
-│   ├── filtering.py        # Blur, sharpen, median
-│   └── registry.py         # Unified attack interface
-├── metrics/                # Evaluation metrics
-│   ├── identification.py   # Accuracy, confusion matrix, ROC
-│   ├── quality.py          # FID, LPIPS, PSNR, SSIM
-│   ├── theoretical.py      # Theory vs empirical comparison
-│   └── statistical.py      # Confidence intervals, t-tests
-├── experiments/            # Experiment scripts (exp1-exp8)
-├── analysis/               # Plotting and table generation
-│   ├── plots.py            # Publication-quality figures
-│   ├── tables.py           # LaTeX table generation
-│   └── paper_figures.py    # Generate all paper figures
-├── baselines/              # Baseline implementations
-├── configs/                # YAML configurations
-├── scripts/                # Shell scripts
-├── data/                   # Data directory
-├── results/                # Output directory
-├── requirements.txt        # Python dependencies
-├── setup.py                # Package setup
-├── README.md               # This file
-└── CLAUDE.md               # Detailed experiment documentation
-```
-
----
 
 ## Citation
 
 ```bibtex
 @inproceedings{munshi2025cdw,
-  title={Code-Division Watermarking: Scalable Multi-Vendor Attribution for Diffusion Models},
+  title={Scalable Multi-Vendor Attribution for Diffusion Models},
   author={Munshi, Sarthak},
   booktitle={...},
   year={2025}
