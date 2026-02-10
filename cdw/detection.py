@@ -127,9 +127,13 @@ class CDWDetector:
         Returns:
             Estimated initial latent z_T of shape (B, 4, h, w)
         """
-        # Ensure correct device
+        # Ensure correct device and dtype
         if self.device is not None:
             image = image.to(self.device)
+
+        # Match VAE dtype (float16 on CUDA, float32 on CPU)
+        vae_dtype = next(self.pipe.vae.parameters()).dtype
+        image = image.to(dtype=vae_dtype)
 
         # Encode image to latent
         latent = self.pipe.vae.encode(image).latent_dist.mean
