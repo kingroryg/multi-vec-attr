@@ -165,7 +165,7 @@ class CDWDetector:
 
         # DDIM inversion (reverse the denoising)
         self.pipe.scheduler.set_timesteps(self.num_inversion_steps)
-        timesteps = reversed(self.pipe.scheduler.timesteps)
+        timesteps = list(reversed(self.pipe.scheduler.timesteps))
 
         for t in timesteps:
             # Predict noise

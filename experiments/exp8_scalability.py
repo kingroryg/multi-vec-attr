@@ -95,10 +95,10 @@ class ScalabilityExperiment(ExperimentBase):
                 torch.cuda.empty_cache() if torch.cuda.is_available() else None
 
                 start = time.perf_counter()
-                codes = generate_codes(
+                codes, _ = generate_codes(
+                    code_family=CodeFamily.WALSH_HADAMARD,
                     num_codes=num_vendors,
                     code_length=code_length,
-                    family=CodeFamily.WALSH_HADAMARD,
                 )
                 end = time.perf_counter()
 

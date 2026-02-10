@@ -126,9 +126,8 @@ class CodeFamilyExperiment(ExperimentBase):
                 results["families"][family_name][str(num_vendors)] = {
                     "num_vendors": num_vendors,
                     "accuracy": float(accuracy_result["accuracy"]),
-                    "top3_accuracy": float(accuracy_result.get("top3_accuracy", 0)),
                     "max_cross_correlation": float(code_stats["max_cross_correlation"]),
-                    "mean_cross_correlation": float(code_stats["mean_abs_cross_correlation"]),
+                    "mean_cross_correlation": float(code_stats["mean_cross_correlation"]),
                     "confusion_matrix": confusion.tolist(),
                 }
 

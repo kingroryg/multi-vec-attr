@@ -114,7 +114,6 @@ class CodeLengthExperiment(ExperimentBase):
                 "empirical_accuracy": float(accuracy_result["accuracy"]),
                 "theoretical_accuracy": float(theory_acc),
                 "sigma_hat": float(sigma_hat),
-                "accuracy_top3": float(accuracy_result.get("top3_accuracy", 0)),
             }
 
             results["theory_comparison"].append({
