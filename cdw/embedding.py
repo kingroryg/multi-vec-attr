@@ -235,11 +235,13 @@ def create_embedder_with_codes(
         seed=seed,
     )
 
-    # Ensure code length matches
+    # Verify code length matches
     actual_length = codes.shape[1]
     if actual_length != config.code_length:
-        # Adjust config to match generated codes
-        config.code_length = actual_length
+        raise ValueError(
+            f"Generated code length {actual_length} doesn't match config {config.code_length}. "
+            f"For Walsh-Hadamard, code_length must be a power of 2 >= num_vendors."
+        )
 
     # Create embedder and register codes
     embedder = CDWEmbedder(config)

@@ -22,7 +22,7 @@ class CodeFamily(Enum):
     RANDOM = "random"
 
 
-def generate_walsh_hadamard_codes(num_codes: int) -> np.ndarray:
+def generate_walsh_hadamard_codes(num_codes: int, code_length: Optional[int] = None) -> np.ndarray:
     """
     Generate Walsh-Hadamard orthogonal codes.
 
@@ -30,23 +30,36 @@ def generate_walsh_hadamard_codes(num_codes: int) -> np.ndarray:
     perfect orthogonality: c_i @ c_j = 0 for i != j.
 
     Args:
-        num_codes: Number of codes to generate. Will be rounded up to
-                   nearest power of 2.
+        num_codes: Number of codes to generate.
+        code_length: Desired code length. Must be a power of 2 and >= num_codes.
+                     If None, uses smallest power of 2 >= num_codes.
 
     Returns:
         codes: np.ndarray of shape (num_codes, code_length) with values in {-1, +1}
-               code_length is the smallest power of 2 >= num_codes
 
     Raises:
-        ValueError: If num_codes > 4096 (practical limit)
+        ValueError: If num_codes > code_length or code_length > 4096
     """
-    if num_codes > 4096:
-        raise ValueError(f"num_codes={num_codes} exceeds practical limit of 4096")
+    # Determine code length
+    if code_length is None:
+        # Find smallest power of 2 >= num_codes
+        code_length = 1
+        while code_length < num_codes:
+            code_length *= 2
+    else:
+        # Validate code_length is power of 2
+        if code_length & (code_length - 1) != 0:
+            # Round up to nearest power of 2
+            cl = 1
+            while cl < code_length:
+                cl *= 2
+            code_length = cl
 
-    # Find smallest power of 2 >= num_codes
-    code_length = 1
-    while code_length < num_codes:
-        code_length *= 2
+    if code_length > 4096:
+        raise ValueError(f"code_length={code_length} exceeds practical limit of 4096")
+
+    if num_codes > code_length:
+        raise ValueError(f"num_codes={num_codes} exceeds code_length={code_length}")
 
     # Generate Hadamard matrix
     H = hadamard(code_length)
@@ -247,7 +260,7 @@ def generate_codes(
         properties: dict of code family properties
     """
     if code_family == CodeFamily.WALSH_HADAMARD:
-        codes = generate_walsh_hadamard_codes(num_codes)
+        codes = generate_walsh_hadamard_codes(num_codes, code_length)
     elif code_family == CodeFamily.GOLD:
         codes = generate_gold_codes(num_codes)
     elif code_family == CodeFamily.RANDOM:
